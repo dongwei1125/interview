@@ -1,0 +1,3 @@
+---
+redirect: /javascript/data-type
+---

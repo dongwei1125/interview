@@ -1,0 +1,32 @@
+name: Deploy pages
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy-github:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.19.0'
+
+      - name: Depend install and build
+        run: |
+          npm install
+          npm run docs:build
+          
+      - name: Deploy GitHub pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          publish_branch: page
+          publish_dir: dist
+          allow_empty_commit: true
+          force_orphan: true
+          full_commit_message: 'feat: deploy pages'
